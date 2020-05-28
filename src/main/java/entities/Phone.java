@@ -2,20 +2,11 @@ package entities;
 
 public class Phone {
 	
-	private Integer id;
 	private String type;
 	private String oper;
 	private String number;
 	
-	private Contact contact;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	private User user;
 
 	public String getType() {
 		return type;
@@ -41,11 +32,11 @@ public class Phone {
 		this.number = number;
 	}
 
-	public Contact getContact() {
-		return contact;
+	public User getUser() {
+		return user;
 	}
 
-	public void setContact(Contact contact) {
-		this.contact = contact;
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

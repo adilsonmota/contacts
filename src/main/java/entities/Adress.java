@@ -13,7 +13,7 @@ public class Adress {
 	private String compl;
 	private String zipCode;
 	
-	private Contact contact;
+	private User user;
 
 	public Integer getId() {
 		return id;
@@ -95,11 +95,11 @@ public class Adress {
 		this.zipCode = zipCode;
 	}
 
-	public Contact getContact() {
-		return contact;
+	public User getUser() {
+		return user;
 	}
 
-	public void setContact(Contact contact) {
-		this.contact = contact;
+	public void setUser(User user) {
+		this.user = user;
 	}
 }
