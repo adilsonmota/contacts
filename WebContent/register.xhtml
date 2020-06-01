@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/templates/default.xhtml">
+	
+<ui:define name="content">
+
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato"/>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+	
+	<style>
+		body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
+		.w3-bar,h1,button {font-family: "Montserrat", sans-serif}
+		.fa-anchor,.fa-coffee {font-size:200px}
+	</style>
+
+<body>
+
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-red w3-card w3-left-align w3-large">
+    <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red"><i class="fa fa-bars"></i></a>
+    <a href="index.xhtml" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Home</a>
+    <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Buscar</a>
+    <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Cadastrar</a>
+    <p:commandLink action="#{ContactBean.logoff}" styleClass="w3-bar-item w3-button w3-hide-small w3-padding-large w3-right">
+    	<i class="fa fa-user"></i> Sair
+    </p:commandLink>
+    
+  </div>
+</div>
+
+<!-- Header -->
+<header class="w3-container w3-red" style="padding: 30px 16px">
+	<br></br>
+	<h1 class="w3-left-align">Novo Funcionário</h1>
+</header>
+
+<h:form>
+<p:growl id="growl" showDetail="true" showSummary="false" sticky="false" /> 
+<div class="w3-row-padding w3-light-grey w3-padding-64 w3-container" style="padding: 170px 16px; ">
+	<div class="w3-container w3-content" style="max-width:850px; ">
+	   
+	    <div class="w3-container w3-card w3-white  w3-margin"><br></br>
+	        <h5>Entre com os dados</h5><br></br>
+	    </div>
+	    
+            <div class="w3-container w3-card w3-white w3-margin"><br></br>
+            
+              <h:panelGrid columns="4" cellpadding="3">
+	                <p:outputLabel value="Nome:"/><p:inputText value="#{ContactBean.newUser.name}" size="40" label="Nome" required="true"/>
+	                <p:outputLabel value="CPF:"/><p:inputMask value="#{ContactBean.newUser.cpf}" size="22" label="CPF" mask="999.999.999-99" required="true"/>
+	           </h:panelGrid>     
+	          <h:panelGrid columns="2" cellpadding="3">
+	                <p:outputLabel value="Login:"/><p:inputText value="#{ContactBean.newUser.email}"
+						placeholder="nomesobrenome@company.com" size="40" label="Login" required="true" />
+ 	 			</h:panelGrid>	
+ 	 			<h:panelGrid columns="4" cellpadding="3">	
+ 	 				<p:outputLabel value="Senha:"/><p:password id="psw1" match="psw2" label="Senha" required="true" feedback="true" size="25"/>
+             		<p:outputLabel value="Confirma senha:"/><p:password label="Confirma Senha" value="#{ContactBean.newUser.password}"
+						id="psw2"  required="true" feedback="false" size="25"/> 
+	          </h:panelGrid><br></br>
+	         <p:panelGrid  style="border:0px">
+		         <p:commandButton value="Salvar" update="@form" action="#{ContactBean.registerUser}" />
+		         <p:commandButton value="Cancelar" type="reset"/>
+      		 </p:panelGrid>
+       		 <br></br>
+            </div>
+
+		
+	</div>
+</div>
+
+</h:form>
+<!-- Footer -->
+<footer class="w3-center w3-opacity">  
+	<p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+</footer>
+
+</body>
+
+	</ui:define>
+</ui:composition>

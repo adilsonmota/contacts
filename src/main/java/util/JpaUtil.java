@@ -13,7 +13,7 @@ public class JpaUtil {
 			Class.forName("oracle.jdbc.OracleDriver");
 
 			conexao = DriverManager.getConnection(
-					"jdbc:oracle:thin:@localhost:1521:XE", "sefaz2", "sefaz2");
+					"jdbc:oracle:thin:@localhost:1521:XE", "ADILSON", "5805");
 		
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

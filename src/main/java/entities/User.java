@@ -14,7 +14,7 @@ public class User {
 	
 	private Profile profile;
 	
-	private List<Adress> adresses = new ArrayList<Adress>();
+	private Adress adress = new Adress();
 	private List<Phone> phones = new ArrayList<Phone>();
 	
 	
@@ -60,16 +60,17 @@ public class User {
 	public void setProfile(Profile profile) {
 		this.profile = profile;
 	}
-	public List<Adress> getAdresses() {
-		return adresses;
-	}
-	public void setAdresses(List<Adress> adresses) {
-		this.adresses = adresses;
-	}
+
 	public List<Phone> getPhones() {
 		return phones;
 	}
 	public void setPhones(List<Phone> phones) {
 		this.phones = phones;
+	}
+	public Adress getAdress() {
+		return adress;
+	}
+	public void setAdress(Adress adress) {
+		this.adress = adress;
 	}
 }

@@ -4,9 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import entities.Adress;
+import entities.Phone;
+import entities.User;
 import util.JpaUtil;
 
 public class AdressDAOImp implements AdressDAO {
@@ -90,11 +93,48 @@ public class AdressDAOImp implements AdressDAO {
 		}
 	}
 
-	public List<Adress> findAll(String keyword) {
+	public Adress findByUser(User user) {
 
-		return null;
+		String sql = "SELECT "
+					+"ID, TYP, NUMBR, STREET, NEIGHB, CITY, STATEOF, COUNTRY, COMPL, ZIPCODE "
+					+"FROM TB_USER U "
+					+"INNER JOIN TB_ADRESS A ON (U.CPF=A.CPF) "
+					+"WHERE U.CPF= ? ";
+		
+		Adress adress = new Adress();
+		
+		Connection conn;
+		try {
+			conn = JpaUtil.getConexao();
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setString(1, user.getCpf());
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()) {
+								
+				adress.setId(rs.getInt("ID"));
+				adress.setType(rs.getString("TYP"));
+				adress.setNumber(rs.getString("NUMBR"));
+				adress.setStreet(rs.getString("STREET"));
+				adress.setNeighb(rs.getString("NEIGHB"));
+				adress.setCity(rs.getString("CITY"));
+				adress.setState(rs.getString("STATEOF"));
+				adress.setCountry(rs.getString("COUNTRY"));
+				adress.setCompl(rs.getString("COMPL"));
+				adress.setZipCode(rs.getString("ZIPCODE"));
+			}
+			ps.close();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return adress;
 	}
-
+	
+	
 	private Integer selectId() {
 
 		String sql = "SELECT SEQ_ADRESS.NEXTVAL FROM DUAL";

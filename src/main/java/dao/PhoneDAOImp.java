@@ -75,15 +75,16 @@ public class PhoneDAOImp implements PhoneDAO {
 		}
 	}
 
-	public List<Phone> findAll(String keyword) {
-		/*
-		*	SERÁ NECESSÁRIO RECEBER UM OBJETO USER?
-		*/
-		String sql = "U.NAME, U.EMAIL, P.TYP, P.OPER, P.NUMBR " + inCondition(keyword);;
+	public List<Phone> findByUser(User user) {
+
+		String sql = "SELECT "
+					+"TYP, OPER, NUMBR "  
+					+"FROM TB_USER U " 
+					+"LEFT JOIN TB_PHONE P ON (U.CPF=P.CPF) " 
+					+"WHERE U.CPF=?";
 		
 		List<Phone> listPhones = new ArrayList<Phone>();
 		Phone phone = new Phone();
-		User user = new User();
 		
 		Connection conn;
 		try {
@@ -91,12 +92,11 @@ public class PhoneDAOImp implements PhoneDAO {
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			
+			ps.setString(1, user.getCpf());
+			
 			ResultSet rs = ps.executeQuery();
 			
 			while (rs.next()) {
-				
-				user.setName(rs.getString("NAME"));
-				user.setEmail(rs.getString("EMAIL"));
 								
 				phone.setType(rs.getString("TYP"));
 				phone.setOper(rs.getString("OPER"));
@@ -109,6 +109,38 @@ public class PhoneDAOImp implements PhoneDAO {
 			ps.close();
 		}
 		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return listPhones;
+	}
+	
+	
+	public List<Phone> findAll(Phone phone) {
+
+		List<Phone> listPhones = new ArrayList<Phone>();
+
+		
+		String sql = "SELECT TYP, OPER, NUMBR FROM TB_PHONE";
+
+		Connection conn;
+		try {
+			conn = JpaUtil.getConexao();
+
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				
+				phone.setType(rs.getString("TYP"));
+				phone.setOper(rs.getString("OPER"));
+				phone.setNumber(rs.getString("NUMBR"));
+				
+				listPhones.add(phone);
+				phone = new Phone();
+			}
+			ps.close();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return listPhones;

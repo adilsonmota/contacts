@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import entities.Adress;
-import entities.Phone;
 import entities.Profile;
 import entities.User;
 import util.JpaUtil;
@@ -92,21 +90,10 @@ public class UserDAOImp implements UserDAO {
 	public List<User> findAll(String keyword) {
 
 		List<User> listUsers = new ArrayList<User>();
-		List<Phone> listPhones = new ArrayList<Phone>();
-		List<Adress> listAdresses = new ArrayList<Adress>();
-
-		Phone phone = new Phone();
-		Adress adress = new Adress();
 		Profile profile = new Profile();
 		User user = new User();
 		
-		String sql = "SELECT " 
-					+ "U.NAME, U.EMAIL, U.CPF, U.SALARY, U.DEPARTMENT, U.PROFILE, "
-					+ "P.TYP AS TYPE, P.OPER, P.NUMBR AS PHONE_NUM, A.TYP AS TYPE_ADRESS, "
-					+ "A.NUMBR AS NUM, A.STREET, A.NEIGHB, A.CITY, A.STATEOF, A.COUNTRY, A.COMPL, A.ZIPCODE "
-					+ "FROM TB_USER U " 
-					+ "LEFT JOIN TB_PHONE P ON (U.CPF = P.CPF) " 
-					+ "LEFT JOIN TB_ADRESS A ON (U.CPF = A.CPF) " 
+		String sql = "SELECT NAME, EMAIL, CPF, SALARY, DEPARTMENT, PROFILE, PASSWORD FROM TB_USER " 
 					+ inCondition(keyword);
 
 		Connection conn;
@@ -114,47 +101,26 @@ public class UserDAOImp implements UserDAO {
 			conn = JpaUtil.getConexao();
 
 			PreparedStatement ps = conn.prepareStatement(sql);
-
+			
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
 				
 				profile.setName(rs.getString("PROFILE"));
 				
-				phone.setType(rs.getString("TYPE"));
-				phone.setOper(rs.getString("OPER"));
-				phone.setNumber(rs.getString("PHONE_NUM"));
-				
-				listPhones.add(phone);
-				
-				adress.setType(rs.getString("TYPE_ADRESS"));
-				adress.setNumber(rs.getString("NUM"));
-				adress.setStreet(rs.getString("STREET"));
-				adress.setNeighb(rs.getString("NEIGHB"));
-				adress.setCity(rs.getString("CITY"));
-				adress.setState(rs.getString("STATEOF"));
-				adress.setCountry(rs.getString("COUNTRY"));
-				adress.setCompl(rs.getString("COMPL"));
-				adress.setZipCode(rs.getString("ZIPCODE"));
-				
-				listAdresses.add(adress);
-				
 				user.setName(rs.getString("NAME"));
 				user.setEmail(rs.getString("EMAIL"));
 				user.setCpf(rs.getString("CPF"));
 				user.setSalary(rs.getDouble("SALARY"));
 				user.setDepartment(rs.getString("DEPARTMENT"));
+				user.setPassword(rs.getString("PASSWORD"));
 				
 				user.setProfile(profile);
-				user.setPhones(listPhones);
-				user.setAdresses(listAdresses);
 				
 				listUsers.add(user);
 				
 				user = new User();
 				profile = new Profile();
-				phone = new Phone();
-				adress = new Adress();
 			}
 			ps.close();
 		} catch (SQLException e) {
@@ -169,19 +135,88 @@ public class UserDAOImp implements UserDAO {
 		
 		if (keyword != null) {
 		
-		cond = "WHERE U.EMAIL LIKE '%"+keyword+"%' OR "
-		        +"U.NAME LIKE '%"+keyword+"%' OR " 
-		        +"U.DEPARTMENT LIKE '%"+keyword+"%' OR "
-		        +"P.OPER LIKE '%"+keyword+"%' OR "
-		        +"A.TYP LIKE '%"+keyword+"%' OR "
-		        +"A.STREET LIKE '%"+keyword+"%' OR "
-		        +"A.NEIGHB LIKE '%"+keyword+"%' OR " 
-		        +"A.CITY LIKE '%"+keyword+"%' OR " 
-		        +"A.STATEOF LIKE '%"+keyword+"%' OR "
-		        +"A.COUNTRY LIKE '%"+keyword+"%'";
+		cond = "WHERE EMAIL LIKE '%"+keyword+"%' OR "
+		        +"NAME LIKE '%"+keyword+"%' OR " 
+		        +"DEPARTMENT LIKE '%"+keyword+"%'";
 		
 		return cond;
 		} 
 		return cond;
 	}
+	
+	
+	public User findAuser(String email) {
+
+		Profile profile = new Profile();
+		User user = new User();
+		
+		String sql = "SELECT NAME, EMAIL, CPF, SALARY, DEPARTMENT, PROFILE, PASSWORD FROM TB_USER " 
+					+ inCondition(email);
+
+		Connection conn;
+		try {
+			conn = JpaUtil.getConexao();
+
+			PreparedStatement ps = conn.prepareStatement(sql);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				
+				profile.setName(rs.getString("PROFILE"));
+				
+				user.setName(rs.getString("NAME"));
+				user.setEmail(rs.getString("EMAIL"));
+				user.setCpf(rs.getString("CPF"));
+				user.setSalary(rs.getDouble("SALARY"));
+				user.setDepartment(rs.getString("DEPARTMENT"));
+				user.setPassword(rs.getString("PASSWORD"));
+				
+				user.setProfile(profile);
+				
+			}
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+	
+
+/*	
+	public User findAuser(String email) {
+		
+		String sql = "SELECT EMAIL, PASSWORD, NAME, CPF, PROFILE FROM TB_USER WHERE EMAIL=?";
+		
+		Connection conn;
+		
+		User obj = new User();
+		Profile profile = new Profile();
+		
+		try {
+			conn = JpaUtil.getConexao();
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setString(1, email);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				
+				obj.setCpf(rs.getString("EMAIL"));
+				obj.setPassword(rs.getString("PASSWORD"));
+				obj.setName(rs.getString("NAME"));
+				obj.setCpf(rs.getString("CPF"));
+				profile.setName(rs.getString("PROFILE"));
+				obj.setProfile(profile);
+			}
+			ps.close();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return obj;
+	}
+*/
 }

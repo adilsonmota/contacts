@@ -1,0 +1,136 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/templates/default.xhtml">
+	
+<ui:define name="content">
+
+
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato"/>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+	
+	<style>
+		body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
+		.w3-bar,h1,button {font-family: "Montserrat", sans-serif}
+		.fa-anchor,.fa-coffee {font-size:200px}
+	</style>
+
+<body>
+	    <h:form>
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-red w3-card w3-left-align w3-large">
+    <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red"><i class="fa fa-bars"></i></a>
+    <a href="index.xhtml" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Home</a>
+    <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Buscar</a>
+    <a href="registerEmployee.xhtml" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Cadastrar</a>
+    <p:commandLink action="#{ContactBean.logoff}" styleClass="w3-bar-item w3-button w3-hide-small w3-padding-large w3-right">
+    	<i class="fa fa-user"></i> Sair
+    </p:commandLink>
+    
+  </div>
+</div>
+
+<!-- Header -->
+<header class="w3-container w3-red" style="padding: 30px 16px">
+	<br></br>
+	<h1 class="w3-left-align">Buscar Colaborador</h1>
+</header>
+
+<p:growl id="growl" showDetail="true" showSummary="false" sticky="false" />
+<!-- Page Container -->
+
+	    
+	    <div class="w3-container w3-card w3-white w3-margin">
+
+		<br></br>
+	        <div class="w3-center w3-container">       
+				<p class="w3-text-grey w3-container w3-margin-rigth">Buscar:  <p:inputText value="#{ContactBean.keyword}"
+					size="72" placeholder="digite algum dado ou vazio para exibir todos" />
+				<p:commandButton value="Ok" update="@form" actionListener="#{ContactBean.searchContact}" /> </p>
+			</div>		
+		<br></br>
+
+	    </div>	
+
+
+<div class="w3-content w3-margin-top" style="max-width:100%;"> 
+	<!-- The Grid -->
+	<div class="w3-row-padding">
+	
+	<!-- Left Column -->
+	<div class="w3-third w3-card-4">
+	<p:commandLink value="Carregar dados" update="@form" action="#{ContactBean.selectContact}"
+	styleClass="w3-margin w3-card w3-container w3-hover-white w3-red w3-button w3-padding-large"/>
+            
+            <div class="w3-container w3-margin-rigth">
+	                <p class="w3-text-grey">CPF: <p:inputText value="#{ContactBean.selectedUser.cpf}" size="30" disabled="true"/></p>
+	                <p class="w3-text-grey">Login: <p:inputText value="#{ContactBean.selectedUser.email}" size="30" disabled="true" /></p>
+	                <p class="w3-text-grey">Setor: <p:inputText value="#{ContactBean.selectedUser.department}" size="30" disabled="true"/></p>
+	                <p class="w3-text-grey">Salário: <p:inputText value="#{ContactBean.selectedUser.salary}" size="30" disabled="true"/></p>
+            </div>
+		<div class="w3-container w3-margin-rigth">
+			<p class="w3-text-grey">Telefones</p>
+			<p:dataTable var="ph" value="#{ContactBean.listPhones}">
+					<p:column headerText="Tipo">
+			            <h:outputText value="#{ph.type}" />
+			        </p:column>
+					<p:column headerText="Operadora">
+			            <h:outputText value="#{ph.oper}" />
+			        </p:column>
+					<p:column headerText="Número">
+			            <h:outputText value="#{ph.number}" />
+			        </p:column>
+			</p:dataTable>
+			<br></br>
+			
+	    </div>
+		
+		<p class="w3-text-grey w3-container w3-margin-rigth">Endereço</p>
+		<p:panelGrid columns="2" style="border:0px">
+          	<p class="w3-text-grey">Tipo: </p><p:inputText value="#{ContactBean.adress.type}" size="35" />
+            <p class="w3-text-grey">Rua:</p><p:inputText value="#{ContactBean.adress.street}" size="35" />
+            <p class="w3-text-grey">Nº: </p><p:inputText value="#{ContactBean.adress.number}" size="35" />
+            <p class="w3-text-grey">Compl: </p><p:inputText value="#{ContactBean.adress.compl}" size="35" />
+            <p class="w3-text-grey">Bairro: </p><p:inputText value="#{ContactBean.adress.neighb}" size="35" />
+            <p class="w3-text-grey">Cep: </p><p:inputMask value="#{ContactBean.adress.zipCode}" mask="99.999-999" size="35" />
+            <p class="w3-text-grey">Cidade </p><p:inputText value="#{ContactBean.adress.city}" size="35" />
+            <p class="w3-text-grey">Estado: </p><p:inputMask value="#{ContactBean.adress.state}" mask="aa" size="35" style="text-transform:uppercase"/>
+ 			<p class="w3-text-grey">País: </p><p:inputText value="#{ContactBean.adress.country}" size="35" />
+ 			</p:panelGrid>
+     		<br></br>
+
+	    </div>
+	
+	 <!-- Right Column -->
+    <div class="w3-twothird">
+		
+		<p:dataTable var="ct" value="#{ContactBean.registeredUsers}" reflow="true" selection="#{ContactBean.selectedUser}" selectionMode="single" rowKey="#{ct.cpf}" >
+			<p:column headerText="Nome"><h:outputText value="#{ct.name}" /></p:column>
+			<p:column headerText="CPF"><h:outputText value="#{ct.cpf}" /></p:column>
+			<p:column headerText="Setor"><h:outputText value="#{ct.department}" /></p:column>
+			<p:column headerText="Salário"><h:outputText value="#{ct.salary}" /></p:column>
+			<p:column headerText="Email"><h:outputText value="#{ct.email}" /></p:column>
+	</p:dataTable>
+					
+	</div>
+	
+	</div>
+	
+</div>
+
+<!-- Footer -->
+<footer class="w3-center w3-opacity">  
+	<p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+</footer>
+</h:form>
+</body>
+
+	</ui:define>
+</ui:composition>
